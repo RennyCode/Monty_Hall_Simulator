@@ -1,0 +1,12 @@
+
+game number: 1
+partitions: car goat goat
+the car is behind partition number: 0
+first choice: goat   index: 2
+indices of goats partition:  1 2
+index of exposed goat partition: 1
+second choice: car  index of second choice: 0
+
+number of games: 1
+number of wins   because of choice change: 1
+number of losses because of choice change: 0
