@@ -4,12 +4,14 @@ from PIL import ImageTk, Image
 import random
 
 
-def mpProblem(should_print):
+def mpProblem(should_print, text_box):
     l1 = ["goat", "car", "goat"]
     random.shuffle(l1)
     if should_print:
-        print("\npartitions: " + l1[0]
-                      + " " + l1[1] + " " + l1[2])
+        my_text = text_box["text"] + "\npartitions: " + l1[0] + " " + l1[1] + " " + l1[2]
+        text_box.config(text=my_text)
+        # print("\npartitions: " + l1[0]
+        #               + " " + l1[1] + " " + l1[2])
     l2 = [0, 1, 2]
     ci = l1.index("car")
     if should_print:
@@ -43,14 +45,16 @@ def mpProblem(should_print):
     return ci, fc, sc
 
 
-def game_run(n, should_print, changes):
+def game_run(n, should_print, changes, text_box):
     # outfile = open("mhResults.txt", 'w')
     wins = 0
     losses = 0
     for i in range(n):
         if should_print:
-            print(("\ngame number: " + str(i + 1)))
-        ci, fc, sc = mpProblem(should_print)
+            # print("\ngame number: " + str(i + 1))
+            my_text = text_box["text"] + "\ngame number: " + str(i + 1)
+            text_box.config(text=my_text)
+        ci, fc, sc = mpProblem(should_print, text_box)
         if changes:
             if ci == sc:
                 wins += 1
@@ -62,13 +66,15 @@ def game_run(n, should_print, changes):
             elif fc == ci:
                 wins += 1
 
-    print("\n\nnumber of games: "
-          + "{0:,d}".format(i+1)
-          + "\nnumber of wins   because of choice change: "
-          + "{0:,d}".format(wins)
-          + "\nnumber of losses because of choice change: "
-          + "{0:,d}".format(losses))
+    my_text = text_box["text"] + "\n\nnumber of games: " + "{0:,d}".format(i+1) + "\nnumber of wins   because of choice change: "+ "{0:,d}".format(wins)+ "\nnumber of losses because of choice change: "+ "{0:,d}".format(losses)
+    text_box.config(text=my_text)
 
+    # print("\n\nnumber of games: "
+    #       + "{0:,d}".format(i+1)
+    #       + "\nnumber of wins   because of choice change: "
+    #       + "{0:,d}".format(wins)
+    #       + "\nnumber of losses because of choice change: "
+    #       + "{0:,d}".format(losses))
     # outfile.close()
 
 
@@ -76,8 +82,9 @@ def create_new_window():
     root.destroy()
     new_root = Tk()
     new_root.geometry("635x500")
-    new_frm = ttk.Frame(new_root, padding=10)
-    new_frm.grid()
+    # scrollbar1 = Scrollbar(new_root, bg="green")
+    # scrollbar1.grid(column=1, row=3)
+    return new_root
 
 
 def human_run():
@@ -85,36 +92,41 @@ def human_run():
     car_img = Image.open("car_image.jpg")
     car_img = car_img.resize((200, 150))
     car_imgTK = ImageTk.PhotoImage(car_img)
+    car_label = Label(root, image=car_imgTK)
+    car_label.place(x=0, y=0)
     goat_img = Image.open("goat_image.jpg")
     goat_img = goat_img.resize((200, 150))
     goat_imgTK = ImageTk.PhotoImage(goat_img)
+    goat_label = Label(root, image=goat_imgTK)
+    goat_label.place(x=0, y=0)
     ttk.Label(root, image=car_imgTK).grid(column=0, row=3)
     ttk.Label(root, image=goat_imgTK).grid(column=1, row=3)
 
 
 def pc_changes():
-    create_new_window()
-    game_run(100, True, True)
+    new_root = create_new_window()
+    text_box = ttk.Label(new_root, width=100, text="start: ")
+    text_box.grid(column=1, row=2)
+    game_run(100, True, True, text_box)
 
 
 def pc_no_changes():
-    create_new_window()
-    game_run(100, True, False)
+    new_root = create_new_window()
+    text_box = ttk.Entry(new_root, width=100)
+    text_box.grid(column=1, row=2)
+    game_run(100, True, False, text_box)
 
 
 root = Tk()
 root.title("Seminar")
 root.geometry("635x500")
-
 curtains_img = Image.open("curtains_image.webp")
 bg = ImageTk.PhotoImage(curtains_img)
-label = Label(root, image=bg)
-label.place(x=0, y=0)
-
+bg_label = Label(root, image=bg)
+bg_label.place(x=0, y=0)
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=1)
-
 ttk.Label(root, text="Welcome To The Monty Hall Game").grid(column=1, row=0)
 ttk.Label(root, text="Choose Game Type:").grid(column=1, row=1)
 ttk.Button(root, text="Human Run", command=human_run).grid(column=2, row=2)
