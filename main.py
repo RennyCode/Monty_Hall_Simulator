@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
 from AlgoSetup import game_run
+import pygame
 
 # add sounds
 # 3 options:
@@ -33,7 +34,7 @@ def human_run():
     ttk.Label(root, image=goat_imgTK).grid(column=1, row=3)
 
 
-def pc_changes():
+def pc_multirun():
     new_root = create_new_window()
     text_box = ttk.Label(new_root, width=100, text="")
     text_box.grid(column=0, row=0)
@@ -47,9 +48,16 @@ def pc_no_changes():
     game_run(100, True, False, text_box)
 
 
+def play(sound):
+    pygame.mixer.music.load(sound)
+    pygame.mixer.music.play(loops=0)
+
+
 root = Tk()
 root.title("Seminar")
 root.geometry("650x500")
+pygame.mixer.init()
+
 curtains_img = Image.open("curtains_image.webp")
 bg = ImageTk.PhotoImage(curtains_img)
 bg_label = Label(root, image=bg)
@@ -58,11 +66,13 @@ root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=1)
 
+# play("Sounds/OpeningSound.wav")
+
 ttk.Label(root, text="Welcome To The Monty Hall Game").grid(column=1, row=0, pady=10)
 ttk.Label(root, text="Choose Game Type:").grid(column=1, row=1, pady=10)
 
 ttk.Button(root, text="PC Single-Run", command=pc_no_changes).grid(column=0, row=2, pady=10)
-ttk.Button(root, text="PC Multi-Run", command=pc_changes).grid(column=1, row=2, pady=10)
+ttk.Button(root, text="PC Multi-Run", command=pc_multirun).grid(column=1, row=2, pady=10)
 ttk.Button(root, text="Human Run", command=human_run).grid(column=2, row=2, pady=10)
 
 ttk.Label(root, text="Times to run:").grid(column=1, row=6, pady=10)
@@ -74,11 +84,7 @@ v=IntVar()
 
 i = 0
 for times, val in times_to_run:
-    b = ttk.Radiobutton(root, 
-                   text=times, 
-                   variable=v, 
-                   command=v.get(),
-                   value=val)
+    b = ttk.Radiobutton(root, text=times, variable=v, command=v.get(), value=val)
     b.grid(column=1, row=7 + i)
     i += 1
 
