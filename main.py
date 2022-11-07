@@ -3,15 +3,18 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 import random
 
+# add sounds
+# 3 options:
+# 1. pc runs 100/1000... times and show statistic
+# 2. human run
+# 3. single pc run and show steps.
 
 def mpProblem(should_print, text_box):
     l1 = ["goat", "car", "goat"]
     random.shuffle(l1)
     if should_print:
-        my_text = text_box["text"] + "\npartitions: " + l1[0] + " " + l1[1] + " " + l1[2]
-        text_box.config(text=my_text)
-        # print("\npartitions: " + l1[0]
-        #               + " " + l1[1] + " " + l1[2])
+        print("\npartitions: " + l1[0]
+                       + " " + l1[1] + " " + l1[2])
     l2 = [0, 1, 2]
     ci = l1.index("car")
     if should_print:
@@ -51,9 +54,9 @@ def game_run(n, should_print, changes, text_box):
     losses = 0
     for i in range(n):
         if should_print:
-            # print("\ngame number: " + str(i + 1))
-            my_text = text_box["text"] + "\ngame number: " + str(i + 1)
-            text_box.config(text=my_text)
+            print("\ngame number: " + str(i + 1))
+            # my_text = text_box["text"] + "\ngame number: " + str(i + 1)
+            # text_box.config(text=my_text)
         ci, fc, sc = mpProblem(should_print, text_box)
         if changes:
             if ci == sc:
@@ -82,8 +85,6 @@ def create_new_window():
     root.destroy()
     new_root = Tk()
     new_root.geometry("635x500")
-    # scrollbar1 = Scrollbar(new_root, bg="green")
-    # scrollbar1.grid(column=1, row=3)
     return new_root
 
 
@@ -105,21 +106,21 @@ def human_run():
 
 def pc_changes():
     new_root = create_new_window()
-    text_box = ttk.Label(new_root, width=100, text="start: ")
-    text_box.grid(column=1, row=2)
+    text_box = ttk.Label(new_root, width=100, text="")
+    text_box.grid(column=0, row=0)
     game_run(100, True, True, text_box)
 
 
 def pc_no_changes():
     new_root = create_new_window()
-    text_box = ttk.Entry(new_root, width=100)
-    text_box.grid(column=1, row=2)
+    text_box = ttk.Label(new_root, width=100, text="")
+    text_box.grid(column=0, row=0)
     game_run(100, True, False, text_box)
 
 
 root = Tk()
 root.title("Seminar")
-root.geometry("635x500")
+root.geometry("800x500")
 curtains_img = Image.open("curtains_image.webp")
 bg = ImageTk.PhotoImage(curtains_img)
 bg_label = Label(root, image=bg)
@@ -127,11 +128,27 @@ bg_label.place(x=0, y=0)
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=1)
-ttk.Label(root, text="Welcome To The Monty Hall Game").grid(column=1, row=0)
-ttk.Label(root, text="Choose Game Type:").grid(column=1, row=1)
-ttk.Button(root, text="Human Run", command=human_run).grid(column=2, row=2)
-ttk.Button(root, text="PC, always changes", command=pc_changes).grid(column=1, row=2)
-ttk.Button(root, text="PC, never changes", command=pc_no_changes).grid(column=0, row=2)
+ttk.Label(root, text="Welcome To The Monty Hall Game").grid(column=1, row=0, pady=5, columnspan=2)
+ttk.Label(root, text="Choose Game Type:").grid(column=1, row=1, pady=20, columnspan=2)
+ttk.Button(root, text="Human Run", command=human_run).grid(column=4, row=2, pady=10)
+ttk.Button(root, text="PC Multi-Run", command=pc_changes).grid(column=2, row=2, pady=10, columnspan=2, sticky=W)
+ttk.Button(root, text="PC Single-Run", command=pc_no_changes).grid(column=0, row=2, columnspan=2)
+timesToRunText = ttk.Label(root, text="Times To Run: ")
+timesToRunText.grid(column=1, row=3, sticky=E)
+timesToRun = ttk.Combobox(root, textvariable="Times To Run")
+timesToRun["values"] = (100, 1000, 10000)
+timesToRun.grid(column=2, row=3, sticky=W)
+changeText = ttk.Label(root, text="Choice")
+changeText.grid(column=1, row=4, sticky=E)
+change = ttk.Combobox(root, textvariable="Choice")
+change["values"] = ("Always Changes", "Never Changes")
+change.grid(column=2, row=4, sticky=W)
+
+changeText = ttk.Label(root, text="Choice")
+changeText.grid(column=0, row=4, sticky=E)
+change = ttk.Combobox(root, textvariable="Choice")
+change["values"] = ("Change", "Don't Change")
+change.grid(column=1, row=4, sticky=W)
 
 root.mainloop()
 
