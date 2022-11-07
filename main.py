@@ -49,7 +49,7 @@ def pc_single_run():
     selected_change = False if selected_change == 0 else True
     new_root = create_new_window()
     text_box = ttk.Label(new_root, width=100, text="")
-    text_box.grid(column=0, row=0)
+    text_box.grid(column=0, row=0, padx=10, pady=10)
     game_run(1, True, selected_change, text_box)
 
 

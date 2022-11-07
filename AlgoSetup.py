@@ -14,8 +14,8 @@ def mhProblem(should_print, text_box):
         text_box.config(text=my_text)
     fc = random.randint(0, 2)
     if should_print:
-        print("\nfirst choice: " + str(l1[fc])
-                      +  "   index: " + str(fc))
+        my_text = text_box["text"] + "\nfirst choice: " + str(l1[fc]) +  "   index: " + str(fc)
+        text_box.config(text=my_text)
     l3 = []
     for i in range(len(l1)):
         if i != ci:
