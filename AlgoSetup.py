@@ -5,13 +5,13 @@ def mhProblem(should_print, text_box):
     l1 = ["goat", "car", "goat"]
     random.shuffle(l1)
     if should_print:
-        print("\npartitions: " + l1[0]
-                       + " " + l1[1] + " " + l1[2])
+        my_text = text_box["text"] + "\npartitions: " + l1[0] + " " + l1[1] + " " + l1[2]
+        text_box.config(text=my_text)
     l2 = [0, 1, 2]
     ci = l1.index("car")
     if should_print:
-        print("\nthe car is behind partition number: "
-                      + str(ci))
+        my_text = text_box["text"] + "\nthe car is behind partition number: " + str(ci)
+        text_box.config(text=my_text)
     fc = random.randint(0, 2)
     if should_print:
         print("\nfirst choice: " + str(l1[fc])
@@ -26,17 +26,20 @@ def mhProblem(should_print, text_box):
       if x != fc:
           k = x
     if should_print:
-        print("\nindices of goats partition: " + s)
+        my_text = text_box["text"] + "\nindices of goats partition: " + s
+        text_box.config(text=my_text)
     if should_print:
-        print("\nindex of exposed goat partition: " + str(k))
+        my_text = text_box["text"] + "\nindex of exposed goat partition: " + str(k)
+        text_box.config(text=my_text)
     for i in range(len(l2)):
         if l2[i] != fc and l2[i] != k:
             sc = i
             break
     if should_print:
-        print("\nsecond choice: " + str(l1[sc])
-                      + "  index of second choice: " + str(sc))
+        my_text = text_box["text"] + "\nsecond choice: " + str(l1[sc]) + "  index of second choice: " + str(sc)
+        text_box.config(text=my_text)
     return ci, fc, sc
+
 
 def game_run(n, should_print, changes, text_box):
     # outfile = open("mhResults.txt", 'w')
@@ -59,13 +62,6 @@ def game_run(n, should_print, changes, text_box):
             elif fc == ci:
                 wins += 1
 
-    my_text = text_box["text"] + "\n\nnumber of games: " + "{0:,d}".format(i+1) + "\nnumber of wins   because of choice change: "+ "{0:,d}".format(wins)+ "\nnumber of losses because of choice change: "+ "{0:,d}".format(losses)
+    my_text = text_box["text"] + "\n\nnumber of games: " + "{0:,d}".format(n) + "\nnumber of wins   because of choice change: "+ "{0:,d}".format(wins)+ "\nnumber of losses because of choice change: "+ "{0:,d}".format(losses)
     text_box.config(text=my_text)
 
-    # print("\n\nnumber of games: "
-    #       + "{0:,d}".format(i+1)
-    #       + "\nnumber of wins   because of choice change: "
-    #       + "{0:,d}".format(wins)
-    #       + "\nnumber of losses because of choice change: "
-    #       + "{0:,d}".format(losses))
-    # outfile.close()
