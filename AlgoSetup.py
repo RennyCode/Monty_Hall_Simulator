@@ -1,7 +1,7 @@
 import random
 
 
-def mhProblem(should_print, text_box):
+def mh_problem(should_print, text_box):
     l1 = ["goat", "car", "goat"]
     random.shuffle(l1)
     if should_print:
@@ -50,7 +50,7 @@ def game_run(n, should_print, changes, text_box):
             print("\ngame number: " + str(i + 1))
             # my_text = text_box["text"] + "\ngame number: " + str(i + 1)
             # text_box.config(text=my_text)
-        ci, fc, sc = mhProblem(should_print, text_box)
+        ci, fc, sc = mh_problem(should_print, text_box)
         if changes:
             if ci == sc:
                 wins += 1
@@ -62,6 +62,9 @@ def game_run(n, should_print, changes, text_box):
             elif fc == ci:
                 wins += 1
 
-    my_text = text_box["text"] + "\n\nnumber of games: " + "{0:,d}".format(n) + "\nnumber of wins   because of choice change: "+ "{0:,d}".format(wins)+ "\nnumber of losses because of choice change: "+ "{0:,d}".format(losses)
+    my_text = text_box["text"] + "\n\nnumber of games: " + "{0:,d}".format(n) + "\nnumber of wins   because of choice change: "+ "{0:,d}".format(wins) + "\nnumber of losses because of choice change: "+ "{0:,d}".format(losses)
     text_box.config(text=my_text)
-
+    if format(wins) > format(losses):
+        return True
+    else:
+        return False

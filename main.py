@@ -6,32 +6,38 @@ import pygame
 
 # add sounds
 # 3 options:
-# 1. pc runs 100/1000... times and show statistic
-# 2. human run
-# 3. single pc run and show steps.
+# 1. pc runs 100/1000... times and show statistic ---- check
+# 2. human run --- pending
+# 3. single pc run and show steps. --- check
 
 
 def create_new_window():
     root.destroy()
     new_root = Tk()
-    new_root.geometry("635x500")
+    new_root.title("Seminar")
+    new_root.geometry("650x500")
+    new_root.resizable(False, False)
     return new_root
 
 
 def human_run():
-    create_new_window()
+    new_root = create_new_window()
+
+    curtains = Image.open("curtains_image.webp")
+    c = ImageTk.PhotoImage(curtains)
+    c_label = Label(new_root, image=c)
+    c_label.place(x=0, y=0)
+
     car_img = Image.open("car_image.jpg")
     car_img = car_img.resize((200, 150))
     car_img_tk = ImageTk.PhotoImage(car_img)
-    car_label = Label(root, image=car_img_tk)
-    car_label.place(x=0, y=0)
+    car_label = Label(new_root, image=car_img_tk)
+    car_label.grid(column=0, row=0)
     goat_img = Image.open("goat_image.jpg")
     goat_img = goat_img.resize((200, 150))
     goat_img_tk = ImageTk.PhotoImage(goat_img)
-    goat_label = Label(root, image=goat_img_tk)
-    goat_label.place(x=0, y=0)
-    ttk.Label(root, image=car_img_tk).grid(column=0, row=3)
-    ttk.Label(root, image=goat_img_tk).grid(column=1, row=3)
+    goat_label = Label(new_root, image=goat_img_tk)
+    goat_label.grid(column=0, row=0)
 
 
 def pc_multirun():
@@ -41,16 +47,27 @@ def pc_multirun():
     new_root = create_new_window()
     text_box = ttk.Label(new_root, width=100, text="")
     text_box.grid(column=0, row=0)
-    game_run(n, False, selected_change, text_box)
+    sound_to_play = game_run(n, False, selected_change, text_box)
+    if sound_to_play:
+        play("Sounds/ApplauseSound.wav")
+    else:
+        play("Sounds/GoatSound.mp3")
 
 
 def pc_single_run():
     selected_change = change2.get()
     selected_change = False if selected_change == 0 else True
     new_root = create_new_window()
+    new_root.title("Seminar")
+    new_root.geometry("650x500")
+    new_root.resizable(False, False)
     text_box = ttk.Label(new_root, width=100, text="")
     text_box.grid(column=0, row=0, padx=10, pady=10)
-    game_run(1, True, selected_change, text_box)
+    sound_to_play = game_run(1, True, selected_change, text_box)
+    if sound_to_play:
+        play("Sounds/ApplauseSound.wav")
+    else:
+        play("Sounds/GoatSound.mp3")
 
 
 def play(sound):
