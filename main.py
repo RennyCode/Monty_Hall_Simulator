@@ -22,22 +22,34 @@ def create_new_window():
 
 def human_run():
     new_root = create_new_window()
+    ttk.Label(new_root, text="Make your choice").grid(column=1, row=0, pady=10)
+    curtains_img_1 = Image.open("curtains_image.webp")
+    curtains_img_1 = curtains_img_1.resize((200, 150))
+    curtains_img_tk = ImageTk.PhotoImage(curtains_img_1)
+    curtains_label_1 = Label(new_root, image=curtains_img_tk)
+    curtains_label_1.grid(column=0, row=1)
+    curtains_label_2 = Label(new_root, image=curtains_img_tk)
+    curtains_label_2.grid(column=1, row=1)
+    curtains_label_3 = Label(new_root, image=curtains_img_tk)
+    curtains_label_3.grid(column=2, row=1)
+    ttk.Button(new_root, text="NO.1", command=human_sec_choice(1)).grid(column=0, row=2, pady=10)
+    ttk.Button(new_root, text="NO.2", command=human_sec_choice(2)).grid(column=1, row=2, pady=10)
+    ttk.Button(new_root, text="NO.3", command=human_sec_choice(3)).grid(column=2, row=2, pady=10)
+    new_root.mainloop()
 
-    curtains = Image.open("curtains_image.webp")
-    c = ImageTk.PhotoImage(curtains)
-    c_label = Label(new_root, image=c)
-    c_label.place(x=0, y=0)
 
-    car_img = Image.open("car_image.jpg")
-    car_img = car_img.resize((200, 150))
-    car_img_tk = ImageTk.PhotoImage(car_img)
-    car_label = Label(new_root, image=car_img_tk)
-    car_label.grid(column=0, row=0)
-    goat_img = Image.open("goat_image.jpg")
-    goat_img = goat_img.resize((200, 150))
-    goat_img_tk = ImageTk.PhotoImage(goat_img)
-    goat_label = Label(new_root, image=goat_img_tk)
-    goat_label.grid(column=0, row=0)
+def human_sec_choice(first_choice):
+    new_root = create_new_window()
+    ttk.Label(new_root, text="Now do you want to change your choice?").grid(column=1, row=0, pady=10)
+    curtains_img_1 = Image.open("curtains_image.webp")
+    curtains_img_1 = curtains_img_1.resize((200, 150))
+    curtains_img_tk = ImageTk.PhotoImage(curtains_img_1)
+    curtains_label_1 = Label(new_root, image=curtains_img_tk)
+    curtains_label_1.grid(column=0, row=1)
+    curtains_label_2 = Label(new_root, image=curtains_img_tk)
+    curtains_label_2.grid(column=1, row=1)
+    curtains_label_3 = Label(new_root, image=curtains_img_tk)
+    curtains_label_3.grid(column=2, row=1)
 
 
 def pc_multirun():
@@ -52,6 +64,8 @@ def pc_multirun():
         play("Sounds/ApplauseSound.wav")
     else:
         play("Sounds/GoatSound.mp3")
+
+    new_root.mainloop()
 
 
 def pc_single_run():
@@ -68,6 +82,8 @@ def pc_single_run():
         play("Sounds/ApplauseSound.wav")
     else:
         play("Sounds/GoatSound.mp3")
+
+    new_root.mainloop()
 
 
 def play(sound):
