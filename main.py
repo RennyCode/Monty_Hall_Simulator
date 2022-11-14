@@ -4,12 +4,12 @@ from PIL import ImageTk, Image
 from AlgoSetup import game_run, mh_problem_human_p1
 import pygame
 import random
+# import os
 
-# add sounds
-# 3 options:
-# 1. pc runs 100/1000... times and show statistic ---- check
-# 2. human run --- pending
-# 3. single pc run and show steps. --- check
+
+# def restart():
+#     root.destroy()
+#     os.startfile("main.py")
 
 
 def create_new_window(frame_destroy):
@@ -113,6 +113,12 @@ def human_results(first_choice, second_choice, l1, second_human_frame):
     else:
         play("Sounds/GoatSound.mp3")
 
+    # Button(
+    #     human_results_frame,
+    #     text="Restart",
+    #     command=lambda: restart()
+    # ).place(relx=0.5, rely=0.7, anchor=CENTER)
+
     root.mainloop()
 
 
@@ -153,7 +159,7 @@ def pc_multirun_res(pc_multirun_frame, n):
 def pc_single_run():
     pc_single_frame = create_new_window(frame)
     choice = random.randint(0, 2)
-    text_box = ttk.Label(pc_single_frame, text="\nThe PC choice was NO." + str(choice+1))
+    text_box = ttk.Label(pc_single_frame, text="\nThe PC choice was No." + str(choice+1))
     text_box.grid(column=1, row=0, pady=10)
     Label(pc_single_frame, image=curtains_img_tk).grid(column=0, row=1)
     Label(pc_single_frame, image=curtains_img_tk).grid(column=1, row=1)
@@ -171,30 +177,46 @@ def pc_single_run_p2(pc_single_frame, choice):
     pc_single_p2_frame = create_new_window(pc_single_frame)
     exposed_goat, l1 = mh_problem_human_p1(choice)
     text_box = ttk.Label(pc_single_p2_frame,
-                         text="\nThe game show expose curtain NO."+str(exposed_goat+1)+"\nThe PC first choice was NO." + str(choice + 1))
+                         text="\nThe PC first choice was No." + str(choice + 1)+"\nThe game show expose curtain NO."+str(exposed_goat+1))
     text_box.grid(column=1, row=0, pady=10)
     Label(pc_single_p2_frame, image=goat_img_tk).grid(column=exposed_goat, row=1)
     for i in range(3):
         if i != exposed_goat:
             Label(pc_single_p2_frame, image=curtains_img_tk).grid(column=i, row=1)
 
+    print("old choice: " + str(choice))
+    print("expose goat: " + str(exposed_goat))
+    ci = l1.index("car")
+    arr = [0, 1, 2]
+    arr.remove(choice)
+    arr.remove(exposed_goat)
+    print("new choice: " + str(arr[0]))
     Button(
-        pc_single_frame,
+        pc_single_p2_frame,
         text="Next Step",
-        command=lambda: pc_single_run_p2(
-            pc_single_p2_frame, choice
+        command=lambda: pc_single_run_res(
+            pc_single_p2_frame, arr[0], ci
         ),
     ).grid(column=1, row=2, pady=10)
 
 
-def pc_single_run_res(pc_single_p2_frame):
+def pc_single_run_res(pc_single_p2_frame, new_choice, ci):
     pc_single_res_frame = create_new_window(pc_single_p2_frame)
-    text_box.grid(column=0, row=0, padx=10, pady=10)
-    sound_to_play = game_run(1, True, text_box)
-    if sound_to_play:
+
+    text_box = ttk.Label(pc_single_res_frame,
+                         text="\nThe PC changed choice to No." + str(new_choice+1))
+    text_box.place(relx=0.5, rely=0.2, anchor=CENTER)
+
+    if ci == new_choice:
+        Label(pc_single_res_frame, image=car_image_tk).place(relx=0.5, rely=0.5, anchor=CENTER)
         play("Sounds/ApplauseSound.wav")
+        text_box_res = ttk.Label(pc_single_res_frame, text="PC Won!!!")
+
     else:
+        Label(pc_single_res_frame, image=goat_img_tk).place(relx=0.5, rely=0.5, anchor=CENTER)
         play("Sounds/GoatSound.mp3")
+        text_box_res = ttk.Label(pc_single_res_frame, text="PC Lost...")
+    text_box_res.place(relx=0.5, rely=0.3, anchor=CENTER)
 
 
 def play(sound):
@@ -223,9 +245,9 @@ frame.columnconfigure(2, weight=1)
 
 ttk.Label(frame, text="Welcome To The Monty Hall Game").grid(column=1, row=0, pady=10)
 
-curtains_img_1 = Image.open("curtains_image.webp")
-curtains_img_1 = curtains_img_1.resize((200, 150))
-curtains_img_tk = ImageTk.PhotoImage(curtains_img_1)
+curtains_img = Image.open("curtains_image.webp")
+curtains_img = curtains_img.resize((200, 150))
+curtains_img_tk = ImageTk.PhotoImage(curtains_img)
 curtains_label_1 = Label(frame, image=curtains_img_tk)
 curtains_label_1.grid(column=0, row=1)
 curtains_label_2 = Label(frame, image=curtains_img_tk)
