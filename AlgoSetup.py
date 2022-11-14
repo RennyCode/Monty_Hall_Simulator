@@ -62,7 +62,7 @@ def mh_problem(should_print, text_box):
     return ci, fc, sc
 
 
-def game_run(n, should_print, changes, text_box):
+def game_run(n, should_print, text_box):
     wins = 0
     losses = 0
     for i in range(n):
@@ -71,16 +71,10 @@ def game_run(n, should_print, changes, text_box):
             # my_text = text_box["text"] + "\ngame number: " + str(i + 1)
             # text_box.config(text=my_text)
         ci, fc, sc = mh_problem(should_print, text_box)
-        if changes:
-            if ci == sc:
-                wins += 1
-            elif fc == ci:
-                losses += 1
-        else:
-            if ci == sc:
-                losses += 1
-            elif fc == ci:
-                wins += 1
+        if ci == sc:
+            wins += 1
+        elif fc == ci:
+            losses += 1
 
     my_text = text_box["text"] + "\n\nnumber of games: " + "{0:,d}".format(n) + "\nnumber of wins   because of choice change: "+ "{0:,d}".format(wins) + "\nnumber of losses because of choice change: "+ "{0:,d}".format(losses)
     text_box.config(text=my_text)
