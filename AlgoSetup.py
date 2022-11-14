@@ -1,5 +1,26 @@
 import random
 
+def mh_problem_human_p1(choice_index):
+    l1 = ["goat", "car", "goat"]
+    random.shuffle(l1)
+    print(l1)
+    l2 = [0, 1, 2]
+    ci = l1.index("car")
+    l3 = []
+    for i in range(len(l1)):
+        if i != ci:
+            l3.append(i)
+    s = ""
+    for x in l3:
+      s = s + " " + str(x)
+      if x != choice_index:
+          k = x
+    for i in range(len(l2)):
+        if l2[i] != choice_index and l2[i] != k:
+            sc = i
+            break
+    return k, l1
+
 
 def mh_problem(should_print, text_box):
     l1 = ["goat", "car", "goat"]
@@ -42,7 +63,6 @@ def mh_problem(should_print, text_box):
 
 
 def game_run(n, should_print, changes, text_box):
-    # outfile = open("mhResults.txt", 'w')
     wins = 0
     losses = 0
     for i in range(n):
@@ -68,3 +88,5 @@ def game_run(n, should_print, changes, text_box):
         return True
     else:
         return False
+
+
