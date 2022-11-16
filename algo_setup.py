@@ -1,25 +1,5 @@
 import random
 
-def mh_problem_human_p1(choice_index):
-    l1 = ["goat", "car", "goat"]
-    random.shuffle(l1)
-    print(l1)
-    l2 = [0, 1, 2]
-    ci = l1.index("car")
-    l3 = []
-    for i in range(len(l1)):
-        if i != ci:
-            l3.append(i)
-    s = ""
-    for x in l3:
-      s = s + " " + str(x)
-      if x != choice_index:
-          k = x
-    for i in range(len(l2)):
-        if l2[i] != choice_index and l2[i] != k:
-            sc = i
-            break
-    return k, l1
 
 
 def mh_problem(should_print, text_box):
@@ -62,14 +42,34 @@ def mh_problem(should_print, text_box):
     return ci, fc, sc
 
 
+def mh_problem_partial(choice_index):
+    obj_list = ["goat", "car", "goat"]
+    random.shuffle(obj_list)
+    print(obj_list)
+    l2 = [0, 1, 2]
+    ci = obj_list.index("car")
+    l3 = []
+    for i in range(len(obj_list)):
+        if i != ci:
+            l3.append(i)
+    s = ""
+    for x in l3:
+      s = s + " " + str(x)
+      if x != choice_index:
+          exposed_goat_index = x
+    for i in range(len(l2)):
+        if l2[i] != choice_index and l2[i] != exposed_goat_index:
+            sc = i
+            break
+    return exposed_goat_index, obj_list
+
+
 def game_run(n, should_print, text_box):
     wins = 0
     losses = 0
     for i in range(n):
         if should_print:
             print("\ngame number: " + str(i + 1))
-            # my_text = text_box["text"] + "\ngame number: " + str(i + 1)
-            # text_box.config(text=my_text)
         ci, fc, sc = mh_problem(should_print, text_box)
         if ci == sc:
             wins += 1
