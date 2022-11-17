@@ -1,24 +1,49 @@
 from tkinter import *
-from PIL import ImageTk, Image
 from algo_setup import game_run, mh_problem_partial
 import pygame
 import random
+from functions import create_new_window, load_image, play_sound
 
 
-def create_new_window(frame_destroy=None):
-    # Destroy previous frame
-    if frame_destroy != None:
-        frame_destroy.destroy()
-    new_frame = Frame(width=650, height=500)
-    new_frame.pack(fill="both", expand=True)
+# Initiate root
+root = Tk()
+root.title("Monty Hall Problem")
+root.geometry("650x500")
+root.resizable(False, False)
+pygame.mixer.init()
 
-    # Setting the padding between columns
+# Load images
+curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
+goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
+car_img = load_image("assets/images/car_image.jpg", 200, 150)
+
+# Function to load main (initial) screen
+def main_screen(frame=None):
+    main_frame = create_new_window(frame)
+
+    # Title
+    Label(main_frame, text="Welcome To The Monty Hall Game").grid(
+        column=1, row=0, pady=10
+    )
+
+    # Render 3 curtain images to screen
     for i in range(3):
-        new_frame.columnconfigure(i, weight=10)
+        Label(main_frame, image=curtains_img).grid(column=i, row=1)
 
-    # Place the background image
-    Label(new_frame, image=background_img).place(x=0, y=0)
-    return new_frame
+    Label(main_frame, text="Choose Game Type:").grid(column=1, row=3, pady=10)
+
+    # PC Single-Run button
+    Button(
+        main_frame, text="PC Single-Run", command=lambda: pc_single_run(main_frame)
+    ).grid(column=0, row=4, pady=10)
+    # PC Multi-Run button
+    Button(main_frame, text="Statistics", command=lambda: pc_multirun(main_frame)).grid(
+        column=1, row=4, pady=10
+    )
+    # Human Run button
+    Button(main_frame, text="Human Run", command=lambda: human_run(main_frame)).grid(
+        column=2, row=4, pady=10
+    )
 
 
 def human_run(main_frame):
@@ -35,8 +60,6 @@ def human_run(main_frame):
             text="No." + str(i + 1),
             command=lambda: human_sec_choice(i, first_human_frame),
         ).grid(column=i, row=2, pady=10)
-
-    root.mainloop()
 
 
 def human_sec_choice(first_choice, first_frame):
@@ -80,7 +103,6 @@ def human_sec_choice(first_choice, first_frame):
                     ),
                 ).grid(column=i, row=2)
         image_label.grid(column=i, row=1)
-    root.mainloop()
 
 
 def human_results(first_choice, second_choice, obj_list, second_human_frame):
@@ -106,10 +128,11 @@ def human_results(first_choice, second_choice, obj_list, second_human_frame):
     )
     image_label.place(relx=0.5, rely=0.5, anchor=CENTER)
 
+    # Play sound conditionally, depends on Win / Lose
     if ci == second_choice:
-        play_sound("sounds/ApplauseSound.wav")
+        play_sound("assets/sounds/ApplauseSound.wav")
     else:
-        play_sound("sounds/GoatSound.mp3")
+        play_sound("assets/sounds/GoatSound.mp3")
 
     # Restart button
     Button(
@@ -118,7 +141,6 @@ def human_results(first_choice, second_choice, obj_list, second_human_frame):
         command=lambda: main_screen(human_results_frame),
     ).place(relx=0.5, rely=0.7, anchor=CENTER)
 
-    root.mainloop()
 
 
 def pc_multirun(main_frame):
@@ -162,7 +184,9 @@ def pc_multirun_res(pc_multirun_frame, n):
     wins = game_run(n, False, text_box)
 
     # Play sound conditionally, depends on Win / Lose
-    play_sound("sounds/ApplauseSound.wav" if wins else "sounds/GoatSound.mp3")
+    play_sound(
+        "assets/sounds/ApplauseSound.wav" if wins else "assets/sounds/GoatSound.mp3"
+    )
 
     # Render image conditionally, depends on Win / Lose
     Label(pc_multirun_frame_res, image=car_img if wins else goat_img).place(
@@ -252,14 +276,14 @@ def pc_single_run_res(pc_single_p2_frame, new_choice, ci):
         Label(pc_single_res_frame, image=car_img).place(
             relx=0.5, rely=0.5, anchor=CENTER
         )
-        play_sound("sounds/ApplauseSound.wav")
+        play_sound("assets/sounds/ApplauseSound.wav")
         text_box_res = Label(pc_single_res_frame, text="PC Won!!!")
 
     else:
         Label(pc_single_res_frame, image=goat_img).place(
             relx=0.5, rely=0.5, anchor=CENTER
         )
-        play_sound("sounds/GoatSound.mp3")
+        play_sound("assets/sounds/GoatSound.mp3")
         text_box_res = Label(pc_single_res_frame, text="PC Lost...")
     text_box_res.place(relx=0.5, rely=0.3, anchor=CENTER)
 
@@ -269,63 +293,6 @@ def pc_single_run_res(pc_single_p2_frame, new_choice, ci):
         command=lambda: main_screen(pc_single_res_frame),
     ).place(relx=0.5, rely=0.7, anchor=CENTER)
 
-
-# Function to play different sounds
-def play_sound(sound_path: str):
-    pygame.mixer.music.load(sound_path)
-    pygame.mixer.music.play(loops=0)
-
-
-# Initiate
-root = Tk()
-root.title("Monty Hall Problem")
-root.geometry("650x500")
-root.resizable(False, False)
-pygame.mixer.init()
-
-# Function to load image (image: name, width, height)
-def load_image(image_name: str, width: int, height: int) -> PhotoImage:
-    image = Image.open(image_name).resize((width, height))
-    image_tk = ImageTk.PhotoImage(image)
-    return image_tk
-
-
-# Load images
-curtains_img = load_image("images/curtains_image.webp", 200, 150)  # Curtains Image
-goat_img = load_image("images/goat_image.jpg", 200, 150)  # Goat Image
-car_img = load_image("images/car_image.jpg", 200, 150)  # Car Image
-background_img = load_image("images/bg_img.jpg", 650, 500)  # Background Image
-
-# Function to load main (initial) screen
-def main_screen(frame=None):
-    main_frame = create_new_window(frame)
-
-    # Title
-    Label(main_frame, text="Welcome To The Monty Hall Game").grid(
-        column=1, row=0, pady=10
-    )
-
-    # Render 3 curtain images to screen
-    for i in range(3):
-        Label(main_frame, image=curtains_img).grid(column=i, row=1)
-
-    Label(main_frame, text="Choose Game Type:").grid(column=1, row=3, pady=10)
-
-    # PC Single-Run button
-    Button(
-        main_frame, text="PC Single-Run", command=lambda: pc_single_run(main_frame)
-    ).grid(column=0, row=4, pady=10)
-    # PC Multi-Run button
-    Button(main_frame, text="Statistics", command=lambda: pc_multirun(main_frame)).grid(
-        column=1, row=4, pady=10
-    )
-    # Human Run button
-    Button(main_frame, text="Human Run", command=lambda: human_run(main_frame)).grid(
-        column=2, row=4, pady=10
-    )
-
-    root.mainloop()
-
-
 if __name__ == "__main__":
     main_screen()
+    root.mainloop()
