@@ -93,6 +93,8 @@ def game_run(n, should_print, text_box):
         + "{0:,d}".format(wins)
         + "\nnumber of losses because of choice change: "
         + "{0:,d}".format(losses)
+        + "\nwin/lose ratio: "
+        + "{:.2f}".format(wins/losses)
     )
     text_box.config(text=my_text)
     if format(wins) > format(losses):

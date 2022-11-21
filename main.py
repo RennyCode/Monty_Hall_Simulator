@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from algo_setup import game_run, mh_problem_partial
 import pygame
 import random
@@ -17,6 +18,7 @@ curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
 goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
 car_img = load_image("assets/images/car_image.jpg", 200, 150)
 
+
 # Function to load main (initial) screen
 def main_screen(frame=None):
     main_frame = create_new_window(frame)
@@ -34,7 +36,7 @@ def main_screen(frame=None):
 
     # PC Single-Run button
     Button(
-        main_frame, text="PC Single-Run", command=lambda: pc_single_run(main_frame)
+        main_frame, text="PC One Game", command=lambda: pc_single_run(main_frame)
     ).grid(column=0, row=4, pady=10)
     # PC Multi-Run button
     Button(main_frame, text="Statistics", command=lambda: pc_multirun(main_frame)).grid(
@@ -55,19 +57,34 @@ def human_run(main_frame):
     # Render 3 curtain images & 3 buttons to choose from
     for i in range(3):
         Label(first_human_frame, image=curtains_img).grid(column=i, row=1)
-        Button(
-            first_human_frame,
-            text="No." + str(i + 1),
-            command=lambda: human_sec_choice(i, first_human_frame),
-        ).grid(column=i, row=2, pady=10)
+        if i == 0:
+            Button(
+                first_human_frame,
+                text="No." + str(i + 1),
+                command=lambda: human_sec_choice(0, first_human_frame),
+            ).grid(column=i, row=2, pady=10)
+        elif i == 1:
+            Button(
+                first_human_frame,
+                text="No." + str(i + 1),
+                command=lambda: human_sec_choice(1, first_human_frame),
+            ).grid(column=i, row=2, pady=10)
+        else:
+            Button(
+                first_human_frame,
+                text="No." + str(i + 1),
+                command=lambda: human_sec_choice(2, first_human_frame),
+            ).grid(column=i, row=2, pady=10)
 
 
 def human_sec_choice(first_choice, first_frame):
     # Create new frame for screen after 1st choice
+    print("first:" + str(first_choice))
     second_human_frame = create_new_window(first_frame)
 
     # Run the Monty Hall algorithm -> return the exposed goat index & list
     exposed_goat_index, obj_list = mh_problem_partial(first_choice)
+    print("exposed:" + str(exposed_goat_index))
 
     Label(second_human_frame, text="Would you like to change your choice?").grid(
         column=1, row=0, pady=10
@@ -142,35 +159,22 @@ def human_results(first_choice, second_choice, obj_list, second_human_frame):
     ).place(relx=0.5, rely=0.7, anchor=CENTER)
 
 
-
 def pc_multirun(main_frame):
     # Create new frame for 'PC Multi-Run'
     pc_multirun_frame = create_new_window(main_frame)
 
     Label(pc_multirun_frame, text="Times to run:").grid(column=1, row=0, pady=10)
 
-    # Times to run radio buttons
-    times_to_run = [
-        ("100", 100),
-        ("1000", 1000),
-        ("10,000", 10000),
-        ("100,000", 100000),
-    ]
-    v = IntVar()
-    v.set(100)
-    i = 0
-    for times, val in times_to_run:
-        b = Radiobutton(
-            pc_multirun_frame, text=times, variable=v, command=v.get(), value=val
-        )
-        b.grid(column=1, row=1 + i)
-        i += 1
+    times_to_run = ttk.Combobox(pc_multirun_frame, width=27, state="readonly")
+    times_to_run['values'] = (100, 500, 1000, 2500, 5000, 10000, 25000, 100000, 500000, 1000000)
+    times_to_run.set(100)
+    times_to_run.grid(column=1, row=1)
 
     # Times to run select button
     Button(
         pc_multirun_frame,
         text="Select",
-        command=lambda: pc_multirun_res(pc_multirun_frame, v.get()),
+        command=lambda: pc_multirun_res(pc_multirun_frame, int(times_to_run.get())),
     ).grid(column=1, row=6, pady=10)
 
 
@@ -292,6 +296,7 @@ def pc_single_run_res(pc_single_p2_frame, new_choice, ci):
         text="Restart",
         command=lambda: main_screen(pc_single_res_frame),
     ).place(relx=0.5, rely=0.7, anchor=CENTER)
+
 
 if __name__ == "__main__":
     main_screen()
