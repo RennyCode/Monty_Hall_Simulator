@@ -1,25 +1,12 @@
 import random
 
 
-def mh_problem(should_print, text_box):
+def mh_problem() -> tuple[int, int, int]:
     l1 = ["goat", "car", "goat"]
     random.shuffle(l1)
-    if should_print:
-        my_text = (
-            text_box["text"] + "\npartitions: " + l1[0] + " " + l1[1] + " " + l1[2]
-        )
-        text_box.config(text=my_text)
     l2 = [0, 1, 2]
     ci = l1.index("car")
-    if should_print:
-        my_text = text_box["text"] + "\nthe car is behind partition number: " + str(ci)
-        text_box.config(text=my_text)
     fc = random.randint(0, 2)
-    if should_print:
-        my_text = (
-            text_box["text"] + "\nfirst choice: " + str(l1[fc]) + "   index: " + str(fc)
-        )
-        text_box.config(text=my_text)
     l3 = []
     for i in range(len(l1)):
         if i != ci:
@@ -29,32 +16,16 @@ def mh_problem(should_print, text_box):
         s = s + " " + str(x)
         if x != fc:
             k = x
-    if should_print:
-        my_text = text_box["text"] + "\nindices of goats partition: " + s
-        text_box.config(text=my_text)
-    if should_print:
-        my_text = text_box["text"] + "\nindex of exposed goat partition: " + str(k)
-        text_box.config(text=my_text)
     for i in range(len(l2)):
         if l2[i] != fc and l2[i] != k:
             sc = i
             break
-    if should_print:
-        my_text = (
-            text_box["text"]
-            + "\nsecond choice: "
-            + str(l1[sc])
-            + "  index of second choice: "
-            + str(sc)
-        )
-        text_box.config(text=my_text)
     return ci, fc, sc
 
 
-def mh_problem_partial(choice_index):
+def mh_problem_partial(choice_index: int) -> tuple[int, list[str]]:
     obj_list = ["goat", "car", "goat"]
     random.shuffle(obj_list)
-    print(obj_list)
     l2 = [0, 1, 2]
     ci = obj_list.index("car")
     l3 = []
@@ -73,31 +44,16 @@ def mh_problem_partial(choice_index):
     return exposed_goat_index, obj_list
 
 
-def game_run(n, should_print, text_box):
+def statistics_calculate(n: int) -> tuple[bool, int, int, int]:
     wins = 0
     losses = 0
     for i in range(n):
-        if should_print:
-            print("\ngame number: " + str(i + 1))
-        ci, fc, sc = mh_problem(should_print, text_box)
+        ci, fc, sc = mh_problem()
         if ci == sc:
             wins += 1
         elif fc == ci:
             losses += 1
-
-    my_text = (
-        text_box["text"]
-        + "\n\nnumber of games: "
-        + "{0:,d}".format(n)
-        + "\nnumber of wins   because of choice change: "
-        + "{0:,d}".format(wins)
-        + "\nnumber of losses because of choice change: "
-        + "{0:,d}".format(losses)
-        + "\nwin/lose ratio: "
-        + "{:.2f}".format(wins/losses)
-    )
-    text_box.config(text=my_text)
-    if format(wins) > format(losses):
-        return True
+    if wins > losses:
+        return True, n, wins, losses
     else:
-        return False
+        return False, n, wins, losses

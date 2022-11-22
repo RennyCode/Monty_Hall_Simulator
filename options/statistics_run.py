@@ -1,17 +1,32 @@
 from tkinter import ttk
 from tkinter import *
 
-from algo_setup import game_run
+from algo_setup import statistics_calculate
 from functions import create_new_window, play_sound, restart_program, load_image
 
 
-def statistics(main_frame):
+def statistics(main_frame: Frame) -> None:
     # Create new frame for 'PC Multi-Run'
     pc_multirun_frame = create_new_window(main_frame)
 
-    Label(pc_multirun_frame, text="Times to run:").grid(column=1, row=0, pady=10)
+    for i in range(3):
+        pc_multirun_frame.grid_rowconfigure(i, weight=1)
+        pc_multirun_frame.grid_columnconfigure(i, weight=1)
 
-    times_to_run = ttk.Combobox(pc_multirun_frame, width=27, state="readonly")
+    Label(
+        pc_multirun_frame,
+        text="Times to run:",
+        font=("Arial", 12, "bold"),
+        bg="midnight blue",
+    ).grid(column=0, row=0, columnspan=3, pady=(100, 0))
+
+    times_to_run = ttk.Combobox(
+        pc_multirun_frame,
+        width=20,
+        state="readonly",
+        justify=CENTER,
+        font=("Arial", "12"),
+    )
     times_to_run["values"] = (
         100,
         500,
@@ -27,49 +42,97 @@ def statistics(main_frame):
     times_to_run.set(100)
     times_to_run.grid(column=1, row=1)
 
-    # Times to run select button
+    # Select button
     Button(
         pc_multirun_frame,
         text="Select",
-        command=lambda: pc_multirun_res(pc_multirun_frame, int(times_to_run.get())),
-    ).grid(column=1, row=6, pady=10)
+        height=2,
+        width=10,
+        font=("Arial", 11, "bold"),
+        command=lambda: statistics_res(pc_multirun_frame, int(times_to_run.get())),
+    ).grid(column=0, row=2, columnspan=3, pady=(0, 100))
     mainloop()
 
 
-def pc_multirun_res(pc_multirun_frame, n):
+def statistics_res(pc_multirun_frame: Frame, n: int) -> None:
     # Create new frame for displaying the results
     pc_multirun_frame_res = create_new_window(pc_multirun_frame)
 
-    # Run the Monty Hall algorithm -> returns Win (True) / Lose (False)
-    text_box = Label(pc_multirun_frame_res, width=100, text="")
-    text_box.grid(column=0, row=0)
-    wins = game_run(n, False, text_box)
+    for i in range(6):
+        pc_multirun_frame_res.grid_rowconfigure(i, weight=1)
+    for i in range(4):
+        pc_multirun_frame_res.grid_columnconfigure(i, weight=1)
+
+    # Run the Monty Hall algorithm
+    condition_bool, n, wins, losses = statistics_calculate(n)
 
     # Play sound conditionally, depends on Win / Lose
     play_sound(
-        "assets/sounds/ApplauseSound.wav" if wins else "assets/sounds/GoatSound.mp3"
+        "assets/sounds/ApplauseSound.wav"
+        if condition_bool
+        else "assets/sounds/GoatSound.mp3"
     )
 
-    goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
-    car_img = load_image("assets/images/car_image.jpg", 200, 150)
+    # Number of games text
+    stats_row(pc_multirun_frame_res, "Number of games: ", str(n), 0, True)
 
-    # Render image conditionally, depends on Win / Lose
-    Label(pc_multirun_frame_res, image=car_img if wins else goat_img).place(
-        relx=0.5, rely=0.5, anchor=CENTER
+    # Wins text
+    stats_row(pc_multirun_frame_res, "Number of wins: ", str(wins), 1)
+
+    # Losses text
+    stats_row(pc_multirun_frame_res, "Number of losses: ", str(losses), 2)
+
+    # Ratio text
+    stats_row(
+        pc_multirun_frame_res,
+        "Wins / Losses ratio: ",
+        "{:.2f}".format(wins / losses),
+        3,
     )
 
     # Render texts conditionally, depends on Win / Lose
-    Label(pc_multirun_frame_res, text="You Won!" if wins else "You Lost!").place(
-        relx=0.5, rely=0.2, anchor=CENTER
-    )
-    Label(pc_multirun_frame_res, text="Choice changed").place(
-        relx=0.5, rely=0.25, anchor=CENTER
+    Label(
+        pc_multirun_frame_res,
+        text="The computer changed its choice every time and won!"
+        if condition_bool
+        else "You Lost!",
+        bg="midnight blue",
+        font=("Arial", 12, "bold"),
+        fg="white",
+    ).grid(column=0, row=4, columnspan=4, pady=10)
+
+    # Render image conditionally, depends on Win / Lose
+    goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
+    car_img = load_image("assets/images/car_image.jpg", 200, 150)
+    Label(pc_multirun_frame_res, image=car_img if wins else goat_img).grid(
+        column=0, row=5, columnspan=4
     )
 
     # Restart button
     Button(
         pc_multirun_frame_res,
         text="Restart",
-        command=lambda: restart_program(pc_multirun_frame_res)
-    ).place(relx=0.5, rely=0.7, anchor=CENTER)
+        height=2,
+        width=10,
+        font=("Arial", 11, "bold"),
+        command=lambda: restart_program(pc_multirun_frame_res),
+    ).grid(column=0, row=6, columnspan=4, pady=40)
     mainloop()
+
+
+def stats_row(
+    frame: Frame, first_text: str, second_text: str, row: int, pad: bool = False
+) -> None:
+    Label(
+        frame,
+        text=first_text,
+        bg="midnight blue",
+        font=("Arial", 11, "bold"),
+    ).grid(column=1, row=row, pady=(40, 0) if pad else None, sticky=W)
+    Label(
+        frame,
+        text=second_text,
+        bg="midnight blue",
+        font=("Arial", 11, "bold"),
+        fg="white",
+    ).grid(column=2, row=row, pady=(40, 0) if pad else None, sticky=E)

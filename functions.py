@@ -11,19 +11,13 @@ def create_new_window(frame_destroy: Frame = None) -> Frame:
     # Destroy previous frame
     if frame_destroy is not None:
         frame_destroy.destroy()
-    new_frame = Frame(width=650, height=500, bg='orange red')
+    new_frame = Frame(width=650, height=500, bg="midnight blue")
     new_frame.pack(fill="both", expand=True)
 
     # Setting the padding between columns
     for i in range(3):
         new_frame.columnconfigure(i, weight=10)
 
-    # Place the background image
-    # global background_img
-    # background_img = load_image(
-    #     "assets/images/bg_img.jpg", 650, 500
-    # )  # Background Image
-    # Label(new_frame, image=background_img).place(x=0, y=0)
     return new_frame
 
 
