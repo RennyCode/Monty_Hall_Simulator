@@ -13,12 +13,10 @@ def statistics(main_frame: Frame) -> None:
         pc_multirun_frame.grid_rowconfigure(i, weight=1)
         pc_multirun_frame.grid_columnconfigure(i, weight=1)
 
-    Label(
+    ttk.Label(
         pc_multirun_frame,
         text="Times to Run:",
-        font=("Arial", 12, "bold"),
-        bg="midnight blue",
-        fg="gray70",
+        style="ST.Label"
     ).grid(column=0, row=0, columnspan=3, pady=(100, 0))
 
     times_to_run = ttk.Combobox(

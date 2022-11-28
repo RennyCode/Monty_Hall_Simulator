@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 import pygame
 
 # Import useful functions
@@ -28,12 +29,10 @@ def main_screen(frame: Frame = None) -> None:
     main_frame = create_new_window(frame)
 
     # Title
-    Label(
+    ttk.Label(
         main_frame,
         text="Welcome To The Monty Hall Game",
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 14, "bold"),
+        style="T.Label"
     ).grid(column=0, row=0, columnspan=3, pady=30)
 
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
@@ -42,12 +41,10 @@ def main_screen(frame: Frame = None) -> None:
     for i in range(3):
         Label(main_frame, image=curtains_img).grid(column=i, row=1)
 
-    Label(
+    ttk.Label(
         main_frame,
         text="Choose Game Type:",
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 12, "bold"),
+        style="ST.Label"
     ).grid(column=0, row=3, columnspan=3, pady=50)
 
     # PC Single-Run button

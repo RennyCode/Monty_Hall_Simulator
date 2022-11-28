@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 from algo_setup import mh_problem_partial
 from functions import create_new_window, play_sound, load_image, restart_program
@@ -8,12 +9,10 @@ def manual(main_frame: Frame) -> None:
     # Create new frame for 'Human Run'
     first_human_frame = create_new_window(main_frame)
 
-    Label(
+    ttk.Label(
         first_human_frame,
         text="Choose a Partition:",
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 12, "bold"),
+        style="ST.Label"
     ).grid(column=0, row=0, columnspan=3, pady=30)
 
     # Load relevant images
@@ -59,12 +58,10 @@ def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
     # Run the Monty Hall algorithm -> return the exposed goat index & list
     exposed_goat_index, obj_list = mh_problem_partial(first_choice)
 
-    Label(
+    ttk.Label(
         second_human_frame,
         text="Would You Like to Change Your Choice?",
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 12, "bold"),
+        style="ST.Label"
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
 
     # Load relevant images
@@ -73,22 +70,18 @@ def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
 
     for i in range(3):
         if i == exposed_goat_index:
-            Label(
+            ttk.Label(
                 second_human_frame,
                 text="▶   Exposed Goat   ◀",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=1, pady=20)
             Label(second_human_frame, image=goat_img).grid(column=i, row=2)
         else:
             if i == first_choice:
-                Label(
+                ttk.Label(
                     second_human_frame,
                     text="⬇   Chosen   ⬇",
-                    bg="midnight blue",
-                    fg="gray60",
-                    font=("Arial", 10, "bold"),
+                    style="PT.Label"
                 ).grid(column=i, row=1, pady=20)
             Label(second_human_frame, image=curtains_img).grid(column=i, row=2)
             if i == 0:
@@ -160,14 +153,12 @@ def human_results(
         font=("Arial", 14, "bold"),
         fg="green" if ci == second_choice else "red",
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
-    Label(
+    ttk.Label(
         human_results_frame,
         text="You Changed Your Choice!"
         if first_choice != second_choice
         else "You Didn't Change Your Choice!",
-        bg="midnight blue",
-        font=("Arial", 12, "bold"),
-        fg="white",
+        style="ST.Label"
     ).grid(column=0, row=1, columnspan=3, pady=(10, 0))
 
     # Load relevant images
@@ -181,28 +172,22 @@ def human_results(
 
     for i, obj in enumerate(obj_list):
         if i == first_choice:
-            Label(
+            ttk.Label(
                 human_results_frame,
                 text="⬇   Your Choice   ⬇" if first_choice == second_choice else "⬇   First Choice   ⬇",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
         elif i == second_choice:
-            Label(
+            ttk.Label(
                 human_results_frame,
                 text="⬇   Your Choice   ⬇" if first_choice == second_choice else "⬇   Second Choice   ⬇",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
         else:
-            Label(
+            ttk.Label(
                 human_results_frame,
                 text="▶   Goat   ◀" if obj == "goat" else "▶   Car   ◀",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
         Label(human_results_frame, image=car_img if obj == "car" else goat_img).grid(
             column=i, row=3

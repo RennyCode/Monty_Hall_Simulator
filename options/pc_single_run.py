@@ -1,5 +1,6 @@
 import random
 from tkinter import *
+from tkinter import ttk
 
 from algo_setup import mh_problem_partial
 from functions import create_new_window, load_image, restart_program, play_sound
@@ -11,12 +12,10 @@ def pc_single_run(main_frame: Frame) -> None:
 
     # Randomize a choice
     choice = random.randint(0, 2)
-    Label(
+    ttk.Label(
         pc_single_frame,
         text="\nPC chose partition No." + str(choice + 1),
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 12, "bold"),
+        style="ST.Label"
     ).grid(column=0, row=0, columnspan=3, pady=20)
 
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
@@ -24,12 +23,10 @@ def pc_single_run(main_frame: Frame) -> None:
     # Render 3 curtain images
     for i in range(3):
         if choice == i:
-            Label(
+            ttk.Label(
                 pc_single_frame,
                 text="⬇   Chosen   ⬇",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=1, pady=20)
         Label(pc_single_frame, image=curtains_img).grid(column=i, row=2)
         Label(
@@ -55,39 +52,31 @@ def pc_single_run_p2(pc_single_frame: Frame, choice: int) -> None:
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
     goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
 
-    Label(
+    ttk.Label(
         pc_single_p2_frame,
         text="PC Chose Partition: No." + str(choice + 1),
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 12, "bold"),
+        style="ST.Label"
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
-    Label(
+    ttk.Label(
         pc_single_p2_frame,
         text="Exposed Goat Behind Partition: No." + str(exposed_goat_index + 1),
-        bg="midnight blue",
-        fg="white",
-        font=("Arial", 12, "bold"),
+        style="ST.Label"
     ).grid(column=0, row=1, columnspan=3, pady=(10, 0))
 
     for i in range(3):
         if i == exposed_goat_index:
-            Label(
+            ttk.Label(
                 pc_single_p2_frame,
                 text="▶   Exposed Goat   ◀",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
             Label(pc_single_p2_frame, image=goat_img).grid(column=i, row=3)
         else:
             if i == choice:
-                Label(
+                ttk.Label(
                     pc_single_p2_frame,
                     text="⬇   Chosen   ⬇",
-                    bg="midnight blue",
-                    fg="gray60",
-                    font=("Arial", 10, "bold"),
+                    style="PT.Label"
                 ).grid(column=i, row=2, pady=20)
             Label(pc_single_p2_frame, image=curtains_img).grid(column=i, row=3)
         Label(
@@ -138,38 +127,30 @@ def pc_single_run_res(
         font=("Arial", 14, "bold"),
         fg="green" if obj_list.index("car") == new_choice else "red",
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
-    Label(
+    ttk.Label(
         pc_single_res_frame,
         text="The PC Changed its Choice to Partition No." + str(new_choice + 1) + "!",
-        bg="midnight blue",
-        font=("Arial", 12, "bold"),
-        fg="white",
+        style="ST.Label"
     ).grid(column=0, row=1, columnspan=3, pady=(10, 0))
 
     for i, obj in enumerate(obj_list):
         if i == exposed_goat_index:
-            Label(
+            ttk.Label(
                 pc_single_res_frame,
                 text="▶   Goat   ◀",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
         elif i == choice:
-            Label(
+            ttk.Label(
                 pc_single_res_frame,
                 text="⬇   First Choice   ⬇",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
         else:
-            Label(
+            ttk.Label(
                 pc_single_res_frame,
                 text="⬇   Second Choice   ⬇",
-                bg="midnight blue",
-                fg="gray60",
-                font=("Arial", 10, "bold"),
+                style="PT.Label"
             ).grid(column=i, row=2, pady=20)
         Label(pc_single_res_frame, image=car_img if obj == "car" else goat_img).grid(
             column=i, row=3
