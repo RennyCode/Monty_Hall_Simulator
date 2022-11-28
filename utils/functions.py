@@ -40,8 +40,8 @@ def play_sound(audio_path: str) -> None:
     :return: None
     """
 
-    pygame.mixer.music.load(audio_path)
-    pygame.mixer.music.play(loops=0)
+    pygame.mixer.music.load(audio_path)  # Load sound to mixer
+    pygame.mixer.music.play(loops=0)  # Play loaded sound without loops
 
 
 # Load image into variable (image: name, width, height)
@@ -59,8 +59,7 @@ def load_image(image_path: str, width: int, height: int) -> PhotoImage:
     """
 
     image = Image.open(image_path).resize((width, height))
-    image_tk = ImageTk.PhotoImage(image)
-    return image_tk
+    return ImageTk.PhotoImage(image)
 
 
 # Render restart button for results frame
@@ -92,6 +91,6 @@ def restart_program(frame_to_destroy: Frame) -> None:
     :return: None
     """
 
-    pygame.mixer.music.stop()
-    frame_to_destroy.master.destroy()
-    os.system("python main.py")
+    pygame.mixer.music.stop()  # Stop any sound if still playing
+    frame_to_destroy.master.destroy()  # Destroy root
+    os.system("python main.py")  # Call program again from the start

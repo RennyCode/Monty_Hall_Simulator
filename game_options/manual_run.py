@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
+# Import utils
 from utils.algo_setup import mh_problem_partial
 from utils.functions import (
     create_new_window,
@@ -11,14 +12,22 @@ from utils.functions import (
 
 
 def manual(main_frame: Frame) -> None:
-    # Create new frame for 'Human Run'
+    """Creates first manual-run window with partitions and selection buttons
+
+    :param main_frame: Previous frame to destroy
+    :type main_frame: Frame
+    :return: None
+    """
+
+    # Create new frame of 'Human Run'
     first_human_frame = create_new_window(main_frame)
 
+    # Instruction label for 1st manual-run
     ttk.Label(first_human_frame, text="Choose a Partition:", style="ST.Label").grid(
         column=0, row=0, columnspan=3, pady=30
     )
 
-    # Load relevant images
+    # Load curtains image to variable
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
 
     # Render 3 curtain images & 3 buttons to choose from
@@ -45,26 +54,40 @@ def manual(main_frame: Frame) -> None:
                 style="TButton",
                 command=lambda: human_sec_choice(first_human_frame, 2),
             ).grid(column=i, row=2, pady=80)
+
     mainloop()
 
 
 def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
+    """Creates second manual-run window similar to previous one,
+    only with different buttons (according to previous frame)
+
+    :param first_frame: Previous frame to destroy
+    :type first_frame: Frame
+    :param first_choice: Index of first choice
+    :type first_choice: int
+    :return: None
+    """
+
     # Create new frame for screen after 1st choice
     second_human_frame = create_new_window(first_frame)
 
     # Run the Monty Hall algorithm -> return the exposed goat index & list
     exposed_goat_index, obj_list = mh_problem_partial(first_choice)
 
+    # Instructions label for 2nd manual-run
     ttk.Label(
         second_human_frame,
         text="Would You Like to Change Your Choice?",
         style="ST.Label",
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
 
-    # Load relevant images
+    # Load curtains and goat images to variables
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
     goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
 
+    # Render curtains and goat images relying on the algorithm return values and user's choice
+    # Also, render captions and buttons accordingly
     for i in range(3):
         if i == exposed_goat_index:
             ttk.Label(
@@ -116,6 +139,20 @@ def human_results(
     second_choice: int,
     obj_list: list[str],
 ) -> None:
+    """Creates third (and final) manual-run window, presenting results of the user's choice
+    (i.e. win / lose condition) and exposure of the objects behind the partitions
+
+    :param second_human_frame: Previous frame to destroy
+    :type second_human_frame: Frame
+    :param first_choice: Index of user's first choice
+    :type first_choice: int
+    :param second_choice: Index of user's second choice
+    :type second_choice: int
+    :param obj_list: list of objects order behind partitions (i.e. goats and car)
+    :type obj_list: list[str]
+    :return: None
+    """
+
     # Create new frame for displaying the results
     human_results_frame = create_new_window(second_human_frame)
 
@@ -143,10 +180,12 @@ def human_results(
         style="ST.Label",
     ).grid(column=0, row=1, columnspan=3, pady=(10, 0))
 
-    # Load relevant images
+    # Load goat and car images to variables
     goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
     car_img = load_image("assets/images/car_image.jpg", 200, 150)
 
+    # Render objects images as returned from algorithm
+    # Also, render captions according to algorithm return values and the user's choice
     for i, obj in enumerate(obj_list):
         if i == first_choice:
             ttk.Label(
