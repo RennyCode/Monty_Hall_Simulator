@@ -1,19 +1,22 @@
 from tkinter import *
 from tkinter import ttk
 
-from algo_setup import mh_problem_partial
-from functions import create_new_window, play_sound, load_image, restart_program
+from utils.algo_setup import mh_problem_partial
+from utils.functions import (
+    create_new_window,
+    play_sound,
+    load_image,
+    render_restart_button,
+)
 
 
 def manual(main_frame: Frame) -> None:
     # Create new frame for 'Human Run'
     first_human_frame = create_new_window(main_frame)
 
-    ttk.Label(
-        first_human_frame,
-        text="Choose a Partition:",
-        style="ST.Label"
-    ).grid(column=0, row=0, columnspan=3, pady=30)
+    ttk.Label(first_human_frame, text="Choose a Partition:", style="ST.Label").grid(
+        column=0, row=0, columnspan=3, pady=30
+    )
 
     # Load relevant images
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
@@ -22,30 +25,24 @@ def manual(main_frame: Frame) -> None:
     for i in range(3):
         Label(first_human_frame, image=curtains_img).grid(column=i, row=1)
         if i == 0:
-            Button(
+            ttk.Button(
                 first_human_frame,
                 text="No." + str(i + 1),
-                height=2,
-                width=10,
-                font=("Arial", 11, "bold"),
+                style="TButton",
                 command=lambda: human_sec_choice(first_human_frame, 0),
             ).grid(column=i, row=2, pady=80)
         elif i == 1:
-            Button(
+            ttk.Button(
                 first_human_frame,
                 text="No." + str(i + 1),
-                height=2,
-                width=10,
-                font=("Arial", 11, "bold"),
+                style="TButton",
                 command=lambda: human_sec_choice(first_human_frame, 1),
             ).grid(column=i, row=2, pady=80)
         else:
-            Button(
+            ttk.Button(
                 first_human_frame,
                 text="No." + str(i + 1),
-                height=2,
-                width=10,
-                font=("Arial", 11, "bold"),
+                style="TButton",
                 command=lambda: human_sec_choice(first_human_frame, 2),
             ).grid(column=i, row=2, pady=80)
     mainloop()
@@ -61,7 +58,7 @@ def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
     ttk.Label(
         second_human_frame,
         text="Would You Like to Change Your Choice?",
-        style="ST.Label"
+        style="ST.Label",
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
 
     # Load relevant images
@@ -71,59 +68,45 @@ def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
     for i in range(3):
         if i == exposed_goat_index:
             ttk.Label(
-                second_human_frame,
-                text="▶   Exposed Goat   ◀",
-                style="PT.Label"
+                second_human_frame, text="▶   Exposed Goat   ◀", style="PT.Label"
             ).grid(column=i, row=1, pady=20)
             Label(second_human_frame, image=goat_img).grid(column=i, row=2)
         else:
             if i == first_choice:
                 ttk.Label(
-                    second_human_frame,
-                    text="⬇   Chosen   ⬇",
-                    style="PT.Label"
+                    second_human_frame, text="⬇   Chosen   ⬇", style="PT.Label"
                 ).grid(column=i, row=1, pady=20)
             Label(second_human_frame, image=curtains_img).grid(column=i, row=2)
             if i == 0:
-                Button(
+                ttk.Button(
                     second_human_frame,
-                    text="Change" if i != first_choice else "Don't\nChange",
-                    height=2,
-                    width=10,
-                    font=("Arial", 11, "bold"),
+                    text="Change" if i != first_choice else "Don't Change",
+                    style="TButton",
                     command=lambda: human_results(
                         second_human_frame, first_choice, 0, obj_list
                     ),
                 ).grid(column=i, row=4, pady=30)
             elif i == 1:
-                Button(
+                ttk.Button(
                     second_human_frame,
-                    text="Change" if i != first_choice else "Don't\nChange",
-                    height=2,
-                    width=10,
-                    font=("Arial", 11, "bold"),
+                    text="Change" if i != first_choice else "Don't Change",
+                    style="TButton",
                     command=lambda: human_results(
                         second_human_frame, first_choice, 1, obj_list
                     ),
                 ).grid(column=i, row=4, pady=30)
             else:
-                Button(
+                ttk.Button(
                     second_human_frame,
-                    text="Change" if i != first_choice else "Don't\nChange",
-                    height=2,
-                    width=10,
-                    font=("Arial", 11, "bold"),
+                    text="Change" if i != first_choice else "Don't Change",
+                    style="TButton",
                     command=lambda: human_results(
                         second_human_frame, first_choice, 2, obj_list
                     ),
                 ).grid(column=i, row=4, pady=30)
-        Label(
-            second_human_frame,
-            text="No." + str((i + 1)),
-            bg="midnight blue",
-            fg="white",
-            font=("Arial", 11, "bold"),
-        ).grid(column=i, row=3, pady=20)
+        ttk.Label(second_human_frame, text="No." + str((i + 1)), style="PN.Label").grid(
+            column=i, row=3, pady=20
+        )
     mainloop()
 
 
@@ -146,67 +129,55 @@ def human_results(
         play_sound("assets/sounds/GoatSound.mp3")
 
     # Render texts conditionally, depends on Win / Lose
-    Label(
+    ttk.Label(
         human_results_frame,
         text="YOU WON!" if ci == second_choice else "YOU LOST!",
-        bg="midnight blue",
-        font=("Arial", 14, "bold"),
-        fg="green" if ci == second_choice else "red",
+        style="WL.Label",
+        foreground="green" if ci == second_choice else "red",
     ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
     ttk.Label(
         human_results_frame,
         text="You Changed Your Choice!"
         if first_choice != second_choice
         else "You Didn't Change Your Choice!",
-        style="ST.Label"
+        style="ST.Label",
     ).grid(column=0, row=1, columnspan=3, pady=(10, 0))
 
     # Load relevant images
     goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
     car_img = load_image("assets/images/car_image.jpg", 200, 150)
 
-    # Render image conditionally, depends on Win / Lose
-    # Label(human_results_frame, image=car_img if ci == second_choice else goat_img).grid(
-    #     column=0, row=2, columnspan=3
-    # )
-
     for i, obj in enumerate(obj_list):
         if i == first_choice:
             ttk.Label(
                 human_results_frame,
-                text="⬇   Your Choice   ⬇" if first_choice == second_choice else "⬇   First Choice   ⬇",
-                style="PT.Label"
+                text="⬇   Your Choice   ⬇"
+                if first_choice == second_choice
+                else "⬇   First Choice   ⬇",
+                style="PT.Label",
             ).grid(column=i, row=2, pady=20)
         elif i == second_choice:
             ttk.Label(
                 human_results_frame,
-                text="⬇   Your Choice   ⬇" if first_choice == second_choice else "⬇   Second Choice   ⬇",
-                style="PT.Label"
+                text="⬇   Your Choice   ⬇"
+                if first_choice == second_choice
+                else "⬇   Second Choice   ⬇",
+                style="PT.Label",
             ).grid(column=i, row=2, pady=20)
         else:
             ttk.Label(
                 human_results_frame,
                 text="▶   Goat   ◀" if obj == "goat" else "▶   Car   ◀",
-                style="PT.Label"
+                style="PT.Label",
             ).grid(column=i, row=2, pady=20)
         Label(human_results_frame, image=car_img if obj == "car" else goat_img).grid(
             column=i, row=3
         )
-        Label(
-            human_results_frame,
-            text="No." + str((i + 1)),
-            bg="midnight blue",
-            fg="white",
-            font=("Arial", 11, "bold"),
+        ttk.Label(
+            human_results_frame, text="No." + str((i + 1)), style="PN.Label"
         ).grid(column=i, row=4, pady=20)
 
     # Restart button
-    Button(
-        human_results_frame,
-        text="Restart",
-        height=2,
-        width=10,
-        font=("Arial", 11, "bold"),
-        command=lambda: restart_program(human_results_frame),
-    ).grid(column=0, row=5, columnspan=3, pady=20)
+    render_restart_button(human_results_frame, 5, 3)
+
     mainloop()
