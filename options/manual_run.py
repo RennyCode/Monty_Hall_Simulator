@@ -10,8 +10,9 @@ def manual(main_frame: Frame) -> None:
 
     Label(
         first_human_frame,
-        text="Make your choice",
+        text="Choose a Partition:",
         bg="midnight blue",
+        fg="white",
         font=("Arial", 12, "bold"),
     ).grid(column=0, row=0, columnspan=3, pady=30)
 
@@ -60,10 +61,11 @@ def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
 
     Label(
         second_human_frame,
-        text="Would you like to change your choice?",
+        text="Would You Like to Change Your Choice?",
         bg="midnight blue",
+        fg="white",
         font=("Arial", 12, "bold"),
-    ).grid(column=0, row=0, columnspan=3, pady=30)
+    ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
 
     # Load relevant images
     curtains_img = load_image("assets/images/curtains_image.webp", 200, 150)
@@ -71,43 +73,64 @@ def human_sec_choice(first_frame: Frame, first_choice: int) -> None:
 
     for i in range(3):
         if i == exposed_goat_index:
-            image_label = Label(second_human_frame, image=goat_img)
+            Label(
+                second_human_frame,
+                text="▶   Exposed Goat   ◀",
+                bg="midnight blue",
+                fg="gray60",
+                font=("Arial", 10, "bold"),
+            ).grid(column=i, row=1, pady=20)
+            Label(second_human_frame, image=goat_img).grid(column=i, row=2)
         else:
-            image_label = Label(second_human_frame, image=curtains_img)
+            if i == first_choice:
+                Label(
+                    second_human_frame,
+                    text="⬇   Chosen   ⬇",
+                    bg="midnight blue",
+                    fg="gray60",
+                    font=("Arial", 10, "bold"),
+                ).grid(column=i, row=1, pady=20)
+            Label(second_human_frame, image=curtains_img).grid(column=i, row=2)
             if i == 0:
                 Button(
                     second_human_frame,
-                    text="Change" if i != first_choice else "Stand",
+                    text="Change" if i != first_choice else "Don't\nChange",
                     height=2,
                     width=10,
                     font=("Arial", 11, "bold"),
                     command=lambda: human_results(
                         second_human_frame, first_choice, 0, obj_list
                     ),
-                ).grid(column=i, row=2, pady=80)
+                ).grid(column=i, row=4, pady=30)
             elif i == 1:
                 Button(
                     second_human_frame,
-                    text="Change" if i != first_choice else "Stand",
+                    text="Change" if i != first_choice else "Don't\nChange",
                     height=2,
                     width=10,
                     font=("Arial", 11, "bold"),
                     command=lambda: human_results(
                         second_human_frame, first_choice, 1, obj_list
                     ),
-                ).grid(column=i, row=2, pady=80)
+                ).grid(column=i, row=4, pady=30)
             else:
                 Button(
                     second_human_frame,
-                    text="Change" if i != first_choice else "Stand",
+                    text="Change" if i != first_choice else "Don't\nChange",
                     height=2,
                     width=10,
                     font=("Arial", 11, "bold"),
                     command=lambda: human_results(
                         second_human_frame, first_choice, 2, obj_list
                     ),
-                ).grid(column=i, row=2, pady=80)
-        image_label.grid(column=i, row=1)
+                ).grid(column=i, row=4, pady=30)
+        Label(
+            second_human_frame,
+            text="No." + str((i + 1)),
+            bg="midnight blue",
+            fg="white",
+            font=("Arial", 11, "bold"),
+        ).grid(column=i, row=3, pady=20)
     mainloop()
 
 
@@ -120,15 +143,12 @@ def human_results(
     # Create new frame for displaying the results
     human_results_frame = create_new_window(second_human_frame)
 
-    for i in range(4):
-        human_results_frame.grid_rowconfigure(i, weight=1)
-
     # Get index of car in list
     ci = obj_list.index("car")
 
     # Play sound conditionally, depends on Win / Lose
     if ci == second_choice:
-        play_sound("assets/sounds/ApplauseSound.wav")
+        play_sound("assets/sounds/ApplauseSound.mp3")
     else:
         play_sound("assets/sounds/GoatSound.mp3")
 
@@ -139,25 +159,61 @@ def human_results(
         bg="midnight blue",
         font=("Arial", 14, "bold"),
         fg="green" if ci == second_choice else "red",
-    ).grid(column=0, row=0, columnspan=3, pady=(40, 0))
+    ).grid(column=0, row=0, columnspan=3, pady=(30, 0))
     Label(
         human_results_frame,
-        text="You changed your choice!"
+        text="You Changed Your Choice!"
         if first_choice != second_choice
-        else "You didn't change your choice!",
+        else "You Didn't Change Your Choice!",
         bg="midnight blue",
         font=("Arial", 12, "bold"),
         fg="white",
-    ).grid(column=0, row=1, columnspan=3)
+    ).grid(column=0, row=1, columnspan=3, pady=(10, 0))
 
     # Load relevant images
     goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
     car_img = load_image("assets/images/car_image.jpg", 200, 150)
 
     # Render image conditionally, depends on Win / Lose
-    Label(human_results_frame, image=car_img if ci == second_choice else goat_img).grid(
-        column=0, row=2, columnspan=3
-    )
+    # Label(human_results_frame, image=car_img if ci == second_choice else goat_img).grid(
+    #     column=0, row=2, columnspan=3
+    # )
+
+    for i, obj in enumerate(obj_list):
+        if i == first_choice:
+            Label(
+                human_results_frame,
+                text="⬇   Your Choice   ⬇" if first_choice == second_choice else "⬇   First Choice   ⬇",
+                bg="midnight blue",
+                fg="gray60",
+                font=("Arial", 10, "bold"),
+            ).grid(column=i, row=2, pady=20)
+        elif i == second_choice:
+            Label(
+                human_results_frame,
+                text="⬇   Your Choice   ⬇" if first_choice == second_choice else "⬇   Second Choice   ⬇",
+                bg="midnight blue",
+                fg="gray60",
+                font=("Arial", 10, "bold"),
+            ).grid(column=i, row=2, pady=20)
+        else:
+            Label(
+                human_results_frame,
+                text="▶   Goat   ◀" if obj == "goat" else "▶   Car   ◀",
+                bg="midnight blue",
+                fg="gray60",
+                font=("Arial", 10, "bold"),
+            ).grid(column=i, row=2, pady=20)
+        Label(human_results_frame, image=car_img if obj == "car" else goat_img).grid(
+            column=i, row=3
+        )
+        Label(
+            human_results_frame,
+            text="No." + str((i + 1)),
+            bg="midnight blue",
+            fg="white",
+            font=("Arial", 11, "bold"),
+        ).grid(column=i, row=4, pady=20)
 
     # Restart button
     Button(
@@ -167,5 +223,5 @@ def human_results(
         width=10,
         font=("Arial", 11, "bold"),
         command=lambda: restart_program(human_results_frame),
-    ).grid(column=0, row=3, columnspan=3, pady=(0, 40))
+    ).grid(column=0, row=5, columnspan=3, pady=20)
     mainloop()

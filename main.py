@@ -46,6 +46,7 @@ def main_screen(frame: Frame = None) -> None:
         main_frame,
         text="Choose Game Type:",
         bg="midnight blue",
+        fg="white",
         font=("Arial", 12, "bold"),
     ).grid(column=0, row=3, columnspan=3, pady=50)
 

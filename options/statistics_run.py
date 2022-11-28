@@ -15,9 +15,10 @@ def statistics(main_frame: Frame) -> None:
 
     Label(
         pc_multirun_frame,
-        text="Times to run:",
+        text="Times to Run:",
         font=("Arial", 12, "bold"),
         bg="midnight blue",
+        fg="gray70",
     ).grid(column=0, row=0, columnspan=3, pady=(100, 0))
 
     times_to_run = ttk.Combobox(
@@ -66,13 +67,6 @@ def statistics_res(pc_multirun_frame: Frame, n: int) -> None:
     # Run the Monty Hall algorithm
     condition_bool, n, wins, losses = statistics_calculate(n)
 
-    # Play sound conditionally, depends on Win / Lose
-    play_sound(
-        "assets/sounds/ApplauseSound.wav"
-        if condition_bool
-        else "assets/sounds/GoatSound.mp3"
-    )
-
     # Number of games text
     stats_row(pc_multirun_frame_res, "Number of games: ", str(n), 0, True)
 
@@ -88,24 +82,6 @@ def statistics_res(pc_multirun_frame: Frame, n: int) -> None:
         "Wins / Losses ratio: ",
         "{:.2f}".format(wins / losses),
         3,
-    )
-
-    # Render texts conditionally, depends on Win / Lose
-    Label(
-        pc_multirun_frame_res,
-        text="The computer changed its choice every time and won!"
-        if condition_bool
-        else "You Lost!",
-        bg="midnight blue",
-        font=("Arial", 12, "bold"),
-        fg="white",
-    ).grid(column=0, row=4, columnspan=4, pady=10)
-
-    # Render image conditionally, depends on Win / Lose
-    goat_img = load_image("assets/images/goat_image.jpg", 200, 150)
-    car_img = load_image("assets/images/car_image.jpg", 200, 150)
-    Label(pc_multirun_frame_res, image=car_img if wins else goat_img).grid(
-        column=0, row=5, columnspan=4
     )
 
     # Restart button
@@ -127,6 +103,7 @@ def stats_row(
         frame,
         text=first_text,
         bg="midnight blue",
+        fg="gray70",
         font=("Arial", 11, "bold"),
     ).grid(column=1, row=row, pady=(40, 0) if pad else None, sticky=W)
     Label(

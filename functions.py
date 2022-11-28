@@ -35,5 +35,6 @@ def load_image(image_path: str, width: int, height: int) -> PhotoImage:
 
 
 def restart_program(frame_to_destroy: Frame) -> None:
+    pygame.mixer.music.stop()
     frame_to_destroy.master.destroy()
     os.system("python main.py")
