@@ -25,12 +25,12 @@ In practice the chances that the player was right at the first time is 1/3 and t
  3. Statistical -> a multiple run of the game, the user select times for play and then presented with the statistical analysis for all of thous game.
  
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/menu_screen.png" width = "300px" display: "inline-block" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/menu_screen.png" width = "300px" />
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/stat_screen.png" width = "300px" display: "inline-block" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/stat_screen.png" width = "300px" />
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/pc_run_res_screen.png" width = "300px" display: "inline-block" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/pc_run_res_screen.png" width = "300px" />
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/manual_screen.png" width = "300px" display: "inline-block" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/manual_screen.png" width = "300px" />
  
  
