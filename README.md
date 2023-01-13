@@ -17,7 +17,7 @@ In time it got proven that assuming is wrong, and the revealing provideds us mor
 In practice the chances that the player was right at the first time is 1/3 and that would be his chance to win if he stayed in that choice, while if he decide to change his choice he'll have a 2/3 chance of winning, this option acctually contain 2 routes for statistical calculation since in the first choice there 2 options of selecting a wrong door then the a door with a goat will be reveal and in changing the player will win (under the assumption that he choose wrong in the first pick). 
 
 
-### visualization
+### Simulator
  this projects allows us to run a simulation of the problem.
  the simulation has 3 modes:
  1. Manual run -> the user get to play the game and make he's own choices.
