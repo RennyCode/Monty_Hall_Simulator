@@ -27,12 +27,12 @@ In practice the chances that the player was right at the first time is 1/3 and t
 
 <div display= "table">
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/menu_screen.png" width = "500px" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/menu_screen.png" width = "400px" />
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/stat_screen.png" width = "500px" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/stat_screen.png" width = "400px" />
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/pc_run_res_screen.png" width = "500px" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/pc_run_res_screen.png" width = "400px" />
 
-<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/manual_screen.png" width = "500px" />
+<img src="https://github.com/RennyCode/Monty_Hall_Simulator/blob/main/manual_screen.png" width = "400px" />
  
 </div> 
